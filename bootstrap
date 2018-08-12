@@ -2,12 +2,13 @@
 
 source /tmp/functions
 
-wget -O /etc/skel/.bashrc https://raw.githubusercontent.com/bryman55/bootstrap/ppInfra/.bashrc
+run "Installing rc files" \
+"wget -O /etc/skel/.bashrc https://raw.githubusercontent.com/bryman55/bootstrap/ppInfra/.bashrc
 wget -O /etc/skel/.vimrc https://raw.githubusercontent.com/bryman55/bootstrap/ppInfra/.vimrc
 cp /etc/skel/.bashrc /root/
 cp /etc/skel/.vimrc /root/
 cp /etc/skel/.bashrc /home/ubuntu/ && chown ubuntu:ubuntu /home/ubuntu/.bashrc
-cp /etc/skel/.vimrc /home/ubuntu/ && chown ubuntu:ubuntu /home/ubuntu/.vimrc
+cp /etc/skel/.vimrc /home/ubuntu/ && chown ubuntu:ubuntu /home/ubuntu/.vimrc" "/var/log/bootstrap.log"
 
 run "Installing Docker" "
 apt install -y \
