@@ -1,5 +1,5 @@
 #!/bin/bash
 
-GITREPO='http://10.0.0.172:3000/devops/bootstrap'
+GITREPO='http://10.0.0.165:3000/devops/bootstrap'
 RAWPATH='/raw/branch/master'
 wget -O - $GITREPO/init | bash -s - $GITREPO $RAWPATH
