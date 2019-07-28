@@ -1,5 +1,35 @@
 #!/bin/bash
 
-GITREPO='http://10.0.0.165:3000/devops/bootstrap'
-RAWPATH='/raw/branch/master'
-wget -O - ${GITREPO}${RAWPATH}/init | bash -s - $GITREPO $RAWPATH
+GITREPO=$1
+RAWPATH=$2
+
+wget -O /tmp/functions ${GITREPO}${RAWPATH}/functions
+source /tmp/functions
+
+run "Installing rc files" \
+"wget -O /etc/skel/.bashrc ${GITREPO}${RAWPATH}/.bashrc && \
+wget -O /etc/skel/.vimrc ${GITREPO}${RAWPATH}/.vimrc && \
+cp /etc/skel/.bashrc /root/ && \
+cp /etc/skel/.vimrc /root/ && \
+cp /etc/skel/.bashrc /home/ubuntu/ && chown ubuntu:ubuntu /home/ubuntu/.bashrc && \
+cp /etc/skel/.vimrc /home/ubuntu/ && chown ubuntu:ubuntu /home/ubuntu/.vimrc" "/var/log/bootstrap.log"
+
+run "Installing Docker" "
+apt install -y \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common && \
+	
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - && \
+
+apt-key fingerprint 0EBFCD88 && \
+
+add-apt-repository -y \
+   \"deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable\" && \
+   
+apt update && apt install -y docker-ce" "/var/log/bootstrap.log"
+
+run "Installing Docker Compose" "curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose" "/var/log/bootstrap.log"
