@@ -15,7 +15,7 @@ cp /etc/skel/.bashrc /home/ubuntu/ && chown ubuntu:ubuntu /home/ubuntu/.bashrc &
 cp /etc/skel/.vimrc /home/ubuntu/ && chown ubuntu:ubuntu /home/ubuntu/.vimrc" "/var/log/bootstrap.log"
 
 run "Installing Docker" "
-apt install -y \
+DEBIAN_FRONTEND=noninteractive apt install -y \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -30,6 +30,6 @@ add-apt-repository -y \
    $(lsb_release -cs) \
    stable\" && \
    
-apt update && apt install -y docker-ce" "/var/log/bootstrap.log"
+apt update && DEBIAN_FRONTEND=noninteractive apt install -y docker-ce" "/var/log/bootstrap.log"
 
 run "Installing Docker Compose" "curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose" "/var/log/bootstrap.log"
